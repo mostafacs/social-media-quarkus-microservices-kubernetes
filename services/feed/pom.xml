@@ -25,6 +25,14 @@
 <!--      </dependency>-->
 <!--    </dependencies>-->
 <!--  </dependencyManagement>-->
+
+  <dependencies>
+    <dependency>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast</artifactId>
+      <version>5.2.1</version>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
