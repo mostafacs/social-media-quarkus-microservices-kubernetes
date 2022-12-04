@@ -28,9 +28,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.hazelcast</groupId>
-      <artifactId>hazelcast</artifactId>
-      <version>5.2.1</version>
+      <groupId>mostafa.demo.social</groupId>
+      <artifactId>caching</artifactId>
     </dependency>
   </dependencies>
   <build>

@@ -1,4 +1,4 @@
-package com.social.caching;
+package org.social.caching;
 
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
@@ -37,7 +37,7 @@ public class CacheConfig {
     }
 
     public static void main(String[] args) {
-        HazelcastInstance instance = hazelCaseClient("hz-hazelcast");
+        HazelcastInstance instance = hazelCaseClient("127.0.0.1");
         instance.getMap("123").put("hello", "world");
         System.out.println(instance.getMap("123").get("hello"));
         instance.shutdown();

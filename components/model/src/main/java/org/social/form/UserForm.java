@@ -1,6 +1,6 @@
-package com.social.form;
+package org.social.form;
 
-import com.social.model.User;
+import org.social.controller.User;
 
 /**
  * @Author Mostafa

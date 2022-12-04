@@ -1,14 +1,11 @@
-package com.social.model;
+package org.social.controller;
 
-import com.social.constants.SecurityConstants;
-import com.social.form.UserForm;
+import org.social.constants.SecurityConstants;
+import org.social.form.UserForm;
 import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

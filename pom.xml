@@ -21,6 +21,7 @@
         <quarkus.platform.version>2.14.2.Final</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+        <map-struct.version>1.5.3.Final</map-struct.version>
     </properties>
 
     <modules>
@@ -62,6 +63,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${map-struct.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
@@ -85,6 +92,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler-plugin.version}</version>
                 <configuration>
+                    <source>16</source>
+                    <target>16</target>
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
@@ -93,6 +102,11 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>1.18.24</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${map-struct.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -105,14 +119,6 @@
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>16</source>
-                    <target>16</target>
                 </configuration>
             </plugin>
         </plugins>

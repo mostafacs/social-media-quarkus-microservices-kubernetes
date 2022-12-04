@@ -1,4 +1,4 @@
-package com.social.constants;
+package org.social.constants;
 
 /**
  * @Author Mostafa
