@@ -16,13 +16,14 @@ import javax.inject.Singleton;
 public class PostService {
 
     @ConfigProperty(name = "post-exec-service")
-    String hazelCastPostExecutorService;
+    String wallUpdateService;
 
     @Inject
     HazelcastInstance hazelcast;
 
     public void addPost(PostForm post) {
-       DurableExecutorService durableExecutorService = hazelcast.getScheduledExecutorService("")..getDurableExecutorService(hazelCastPostExecutorService);
+
+        DurableExecutorService durableExecutorService = hazelcast.getExecutorService("");
         durableExecutorService.submit(() -> {}).getTaskId();
         durableExecutorService.retrieveResult(11l);
     }

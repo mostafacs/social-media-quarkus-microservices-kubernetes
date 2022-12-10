@@ -1,0 +1,15 @@
+<hazelcast>
+    <executor-service name="executor">
+        <pool-size>1</pool-size>
+    </executor-service>
+<!--    <network>-->
+<!--        <port auto-increment="true">5701</port>-->
+<!--        <join>-->
+<!--            <tcp-ip enabled="true">-->
+<!--                <member>192.168.130.33</member>-->
+<!--                <member>192.168.130.45</member>-->
+<!--                <member>192.168.130.73</member>-->
+<!--            </tcp-ip>-->
+<!--        </join>-->
+<!--    </network>-->
+</hazelcast>

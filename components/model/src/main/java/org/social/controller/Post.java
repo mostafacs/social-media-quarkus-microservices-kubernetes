@@ -47,4 +47,8 @@ public class Post {
 
     @Column(name = "comments_count")
     private Integer commentsCount;
+
+    @Column(name = "set_to_wall")
+    private Boolean setToWall;
+
 }
