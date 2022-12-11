@@ -7,6 +7,7 @@ import org.social.post.form.PostForm;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.persistence.EntityManager;
 
 /**
  * @Author Mostafa
@@ -14,6 +15,9 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class PostService {
+
+    //@Inject
+    EntityManager em;
 
     @ConfigProperty(name = "post-exec-service")
     String wallUpdateService;
@@ -23,8 +27,9 @@ public class PostService {
 
     public void addPost(PostForm post) {
 
-        DurableExecutorService durableExecutorService = hazelcast.getExecutorService("");
-        durableExecutorService.submit(() -> {}).getTaskId();
-        durableExecutorService.retrieveResult(11l);
+         //   hazelcast.getQueue("").take();
+        DurableExecutorService durableExecutorService = hazelcast.getDurableExecutorService("");
+//        durableExecutorService.submit(() -> {}).getTaskId();
+//        durableExecutorService.retrieveResult(11l);
     }
 }

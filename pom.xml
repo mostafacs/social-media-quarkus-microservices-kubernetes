@@ -26,6 +26,7 @@
 
     <modules>
         <module>components/model</module>
+        <module>components/caching</module>
         <module>services/authentication</module>
         <module>services/feed</module>
     </modules>
@@ -48,7 +49,7 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-reactive</artifactId>
+            <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
         </dependency>
         <!-- Hibernate ORM specific dependencies -->
         <dependency>

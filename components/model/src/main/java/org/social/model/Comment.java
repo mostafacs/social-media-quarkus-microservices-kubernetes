@@ -1,4 +1,7 @@
-package org.social.controller;
+package org.social.model;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +21,7 @@ import java.util.List;
  */
 @Table(name = "comment")
 @Entity
+@Getter @Setter
 public class Comment {
 
     @Id

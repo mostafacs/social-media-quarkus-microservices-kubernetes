@@ -1,4 +1,4 @@
-package org.social.controller;
+package org.social.model;
 
 import lombok.Getter;
 import lombok.Setter;

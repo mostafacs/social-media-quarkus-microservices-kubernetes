@@ -1,4 +1,4 @@
-package org.social.controller;
+package org.social.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author Mostafa
@@ -20,16 +22,15 @@ import java.util.List;
  */
 @Table(name = "post")
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "post_text")
-    private String postText;
+    @Column(name = "post_body")
+    private String postBody;
 
     @ManyToOne
     @JoinColumn(name = "user_fk")
@@ -51,4 +52,24 @@ public class Post {
     @Column(name = "set_to_wall")
     private Boolean setToWall;
 
+    @Column(name = "created_on")
+    private Date createdOn;
+
+    @Column(name = "updated_on")
+    private Date updatedOn;
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return id.equals(post.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

@@ -1,12 +1,12 @@
 package org.social.form;
 
-import org.social.controller.User;
+import org.social.model.User;
 
 /**
  * @Author Mostafa
  * On 11/28/22
  */
-public record UserForm (String firstname, String lastname,
+public record UserForm (Long id, String firstname, String lastname,
                         String username, String email,
                         String password){
 

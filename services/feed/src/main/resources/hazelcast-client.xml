@@ -1,7 +1,18 @@
-<hazelcast>
-    <executor-service name="executor">
-        <pool-size>1</pool-size>
-    </executor-service>
+<hazelcasts-client xmlns="http://www.hazelcast.com/schema/client-config"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.hazelcast.com/schema/client-config
+                  http://www.hazelcast.com/schema/client-config/hazelcast-client-config-5.2.xsd">
+
+
+    <hazelcast>
+        <queue name="*">
+            <max-size>6</max-size>
+        </queue>
+    </hazelcast>
+
+<!--    <executor-service name="executor">-->
+<!--        <pool-size>1</pool-size>-->
+<!--    </executor-service>-->
 <!--    <network>-->
 <!--        <port auto-increment="true">5701</port>-->
 <!--        <join>-->
@@ -12,4 +23,4 @@
 <!--            </tcp-ip>-->
 <!--        </join>-->
 <!--    </network>-->
-</hazelcast>
+</hazelcasts-client>

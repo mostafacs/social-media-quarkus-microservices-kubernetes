@@ -1,4 +1,4 @@
-package org.social.controller;
+package org.social.model;
 
 import org.social.constants.SecurityConstants;
 import org.social.form.UserForm;
