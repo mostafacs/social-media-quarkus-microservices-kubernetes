@@ -3,6 +3,8 @@ package org.social.post.form;
 import lombok.Getter;
 import lombok.Setter;
 import org.social.form.UserForm;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,9 +12,11 @@ import java.util.List;
  * On 12/4/22
  */
 @Getter @Setter
-public class PostForm {
+public class PostForm implements Serializable {
 
     private Long id;
+
+    private Integer priority;
 
     private String postBody;
 

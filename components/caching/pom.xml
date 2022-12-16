@@ -37,6 +37,11 @@
             <groupId>com.hazelcast</groupId>
             <artifactId>quarkus-hazelcast-client</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.hazelcast</groupId>-->
+<!--            <artifactId>hazelcast-kubernetes</artifactId>-->
+<!--            <version>5.2.1</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
