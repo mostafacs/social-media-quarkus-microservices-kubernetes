@@ -28,14 +28,25 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.hazelcast</groupId>-->
-<!--            <artifactId>hazelcast</artifactId>-->
-<!--            <version>5.2.1</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>mostafa.demo.social</groupId>
+            <artifactId>model</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <version>5.2.1</version>
+        </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>quarkus-hazelcast-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.hazelcast</groupId>
+                    <artifactId>hazelcast</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.hazelcast</groupId>-->

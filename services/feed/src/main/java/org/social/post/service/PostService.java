@@ -3,7 +3,7 @@ package org.social.post.service;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.durableexecutor.DurableExecutorService;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.social.post.form.PostForm;
+import org.social.form.PostForm;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

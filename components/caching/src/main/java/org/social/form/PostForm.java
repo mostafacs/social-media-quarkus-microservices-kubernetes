@@ -1,4 +1,4 @@
-package org.social.post.form;
+package org.social.form;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -6,7 +6,6 @@ package org.social.caching;
  */
 public class CacheConstants {
 
-    public static final String POST_TO_FEED_SERVICE = "post-to-wall-service";
-    public static final String CACHE_FEED = "feed";
+    public static final String FeedCacheMapPrefix = "feed-cache";
 
 }

@@ -1,10 +1,10 @@
-package org.social.post.mapper;
+package org.social.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.social.form.PostForm;
 import org.social.model.Post;
+import org.social.form.PostForm;
 
 /**
  * @Author Mostafa
