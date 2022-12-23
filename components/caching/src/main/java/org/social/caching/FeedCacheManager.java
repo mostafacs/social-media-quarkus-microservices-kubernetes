@@ -10,7 +10,7 @@ import java.util.List;
  * @Author Mostafa
  * On 12/18/22
  */
-public interface FeedManager {
+public interface FeedCacheManager {
 
     void addToUserFeed(Long userId, PostForm userForm) throws JsonProcessingException;
 

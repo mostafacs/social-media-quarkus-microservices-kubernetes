@@ -21,7 +21,7 @@ import java.util.List;
  * On 12/18/22
  */
 @Singleton
-public class HazelcastFeedManager implements FeedManager {
+public class HazelcastFeedCacheManager implements FeedCacheManager {
 
     @Inject
     HazelcastInstance hazelcast;
