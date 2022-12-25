@@ -2,9 +2,8 @@ package org.social.form;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.social.form.UserForm;
-
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,4 +28,10 @@ public class PostForm implements Serializable {
     private Integer likesCount;
 
     private Integer commentsCount;
+
+    private Date createdOn;
+
+    private Date updatedOn;
+
+    private Long updatedOnTimeStamp;
 }

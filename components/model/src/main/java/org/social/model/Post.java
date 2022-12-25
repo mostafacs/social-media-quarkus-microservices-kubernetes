@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -40,8 +42,9 @@ public class Post {
     // @Convert(converter = )
     private List<String> images; // image urls
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    // to keep performance
+//    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+//    private List<Comment> comments;
 
     @Column(name = "likes_count")
     private Integer likesCount;
@@ -52,9 +55,11 @@ public class Post {
     @Column(name = "set_to_wall")
     private Boolean setToWall;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_on")
     private Date createdOn;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_on")
     private Date updatedOn;
 

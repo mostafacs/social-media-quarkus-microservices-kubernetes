@@ -15,9 +15,10 @@ public interface PostMapper {
 
     PostMapper mapper = Mappers.getMapper(PostMapper.class);
 
+    @Mapping(target = "updatedOnTimeStamp",
+            expression = "java(post.getUpdatedOn().getTime())")
     PostForm toForm(Post post);
 
-    @Mapping(target = "comments", ignore = true)
     @Mapping(target = "user", ignore = true)
     Post toEntity(PostForm post);
 }

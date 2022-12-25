@@ -26,7 +26,9 @@
 
     <modules>
         <module>components/model</module>
+        <module>components/framework</module>
         <module>components/caching</module>
+        <module>components/messaging</module>
         <module>services/authentication</module>
         <module>services/feed</module>
     </modules>

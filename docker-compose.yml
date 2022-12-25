@@ -24,3 +24,16 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  ## hazelcast
+  hazelcast:
+    image: hazelcast/hazelcast:5.2.0
+    ports:
+      - "5701:5701"
+  management-center:
+    image: hazelcast/management-center:5.2.0
+    ports:
+      - "8080:8080"
+    environment:
+      - MC_DEFAULT_CLUSTER=dev
+      - MC_DEFAULT_CLUSTER_MEMBERS=hazelcast

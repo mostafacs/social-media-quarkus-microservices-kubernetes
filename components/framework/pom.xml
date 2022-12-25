@@ -13,7 +13,7 @@
 
 
     <groupId>mostafa.demo.social</groupId>
-    <artifactId>messaging</artifactId>
+    <artifactId>framework</artifactId>
     <version>1.0</version>
 
     <dependencyManagement>
@@ -32,23 +32,6 @@
             <groupId>mostafa.demo.social</groupId>
             <artifactId>model</artifactId>
             <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>mostafa.demo.social</groupId>
-            <artifactId>caching</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>mostafa.demo.social</groupId>
-            <artifactId>framework</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
         </dependency>
     </dependencies>
 

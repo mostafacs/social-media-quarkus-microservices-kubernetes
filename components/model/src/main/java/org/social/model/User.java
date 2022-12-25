@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * @Author Mostafa
@@ -33,5 +34,7 @@ public class User {
 
     @Column
     String password;
+
+    Date joinedOn;
 
 }

@@ -14,6 +14,7 @@ import com.hazelcast.core.HazelcastJsonValue;
 import com.hazelcast.map.IMap;
 import com.hazelcast.sql.SqlResult;
 import com.hazelcast.sql.SqlRow;
+import org.social.caching.FeedCacheManager;
 import org.social.form.PostForm;
 
 import javax.inject.Inject;
@@ -24,7 +25,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @Author Mostafa
@@ -40,6 +43,9 @@ public class AddPostController {
 
     @Inject
     ObjectMapper objectMapper;
+
+    @Inject
+    FeedCacheManager feedCacheManager;
 
     @POST
     public Response addPost(PostForm post) {
@@ -67,21 +73,24 @@ public class AddPostController {
         //mapConfig.add
         //hazelcast.getConfig().addMapConfig()
 
-        IQueue queue = hazelcast.getQueue("hello");
-        IMap<Long, HazelcastJsonValue> map = hazelcast.getMap("WallUserXyz5");
-        map.addIndex(IndexType.SORTED, "priority");
+//        IQueue queue = hazelcast.getQueue("hello");
+//        IMap<Long, HazelcastJsonValue> map = hazelcast.getMap("WallUserXyz5");
+//        map.addIndex(IndexType.SORTED, "priority");
+//
+//
+//        ISet set = hazelcast.getSet("wall-set");
 
+        Long userId = 123456l;
+        for (Long j = 100l; j > 0; j--) {
+                System.out.println("Put = "+String.valueOf(j));
+                PostForm post= new PostForm();
+                post.setId(j);
+                post.setPriority(j.intValue());
+                post.setUpdatedOn(new Date());
+            // System.out.println(objectMapper.writeValueAsString(post));
+                feedCacheManager.addToUserFeed(userId, post);
+            }
 
-        ISet set = hazelcast.getSet("wall-set");
-
-//        for (Long j = 1000l; j > 0; j--) {
-//                System.out.println("Put = "+String.valueOf(j));
-//                PostForm post= new PostForm(); post.setPriority(j.intValue());
-//            System.out.println(objectMapper.writeValueAsString(post));
-//                map.put(j, new HazelcastJsonValue(objectMapper.writeValueAsString(post)));
-//                queue.add(post);
-//            }
-        //}
 
             new Thread(  () -> {
                 try {
@@ -91,23 +100,28 @@ public class AddPostController {
                 }
 
                 //for (int i = 0; i < 5; i++) {
-                System.out.println("Size="+map.size());
+                System.out.println("Size="+feedCacheManager.size(userId));
 
+                List<PostForm> wall = feedCacheManager.getUserFeed(userId, 50);
 
-                hazelcast.getSql().execute("CREATE IF NOT EXIST MAPPING WallUserXyz5 \n" +
-                        "TYPE IMap \n" +
-                        "OPTIONS (\n" +
-                        "    'keyFormat'='bigint',\n" +
-                        "    'valueFormat'='json'\n" +
-                        ")");
-                Long startTime = System.currentTimeMillis();
-                SqlResult sqlResult = hazelcast.getSql().execute("SELECT JSON_QUERY(this, '$') as post FROM WallUserXyz5 order by JSON_VALUE(this, '$.priority' RETURNING int);"); // map.values(Predicates.pagingPredicate(Predicates.alwaysTrue(), 22));
-                System.out.println("Executed in "+ (System.currentTimeMillis()-startTime) );
-                Iterator<SqlRow> itr =  sqlResult.iterator();
-                while (itr.hasNext()) {
-                    SqlRow row = itr.next();
-                    System.out.println((HazelcastJsonValue) row.getObject("post"));
+                for(PostForm post : wall) {
+                    System.out.println(post.getPriority() +" - "+post.getUpdatedOn());
                 }
+
+//                hazelcast.getSql().execute("CREATE IF NOT EXIST MAPPING WallUserXyz5 \n" +
+//                        "TYPE IMap \n" +
+//                        "OPTIONS (\n" +
+//                        "    'keyFormat'='bigint',\n" +
+//                        "    'valueFormat'='json'\n" +
+//                        ")");
+//                Long startTime = System.currentTimeMillis();
+//                SqlResult sqlResult = hazelcast.getSql().execute("SELECT JSON_QUERY(this, '$') as post FROM WallUserXyz5 order by JSON_VALUE(this, '$.priority' RETURNING int);"); // map.values(Predicates.pagingPredicate(Predicates.alwaysTrue(), 22));
+//                System.out.println("Executed in "+ (System.currentTimeMillis()-startTime) );
+//                Iterator<SqlRow> itr =  sqlResult.iterator();
+//                while (itr.hasNext()) {
+//                    SqlRow row = itr.next();
+//                    System.out.println((HazelcastJsonValue) row.getObject("post"));
+//                }
 
 //                for (HazelcastJsonValue postJson : jsonValues) {
 //                    PostForm value = null;
@@ -121,7 +135,7 @@ public class AddPostController {
                 System.out.println("-------------");
                 //}
             }).start();
-        map.flush();
+        // map.flush();
 
         return Response.ok(new PostForm()).build();
     }
