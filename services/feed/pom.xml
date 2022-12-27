@@ -37,6 +37,11 @@
       <artifactId>model</artifactId>
       <version>1.0</version>
     </dependency>
+    <dependency>
+      <groupId>mostafa.demo.social</groupId>
+      <artifactId>messaging</artifactId>
+      <version>1.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

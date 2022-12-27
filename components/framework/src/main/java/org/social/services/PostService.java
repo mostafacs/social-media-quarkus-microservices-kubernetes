@@ -9,6 +9,7 @@ import org.social.model.Post;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,19 @@ public class PostService {
     @Inject
     EntityManager em;
 
-    public PostForm getPost(Long postId, int commentsCount) {
+    @Transactional
+    public Post save(Post post) {
+        em.persist(post);
+        return post;
+    }
+
+    /**
+     * Get PostForm with limit number of comments
+     * @param postId
+     * @param commentsCount
+     * @return
+     */
+    public PostForm getPostForm(Long postId, int commentsCount) {
         Post post = em.find(Post.class, postId);
         List<Comment> comments = em.createQuery("Select comment from Comment comment where comment.post=:post", Comment.class)
                 .setParameter("post", post)

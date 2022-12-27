@@ -50,7 +50,7 @@ public class HazelcastFeedCacheManager implements FeedCacheManager {
     }
 
     @Override
-    public void addToUserFeed(Long userId, PostForm post) throws JsonProcessingException {
+    public void addToUserFeed(Long userId, PostForm post) throws Exception {
         String mapName = "UserWall"+userId;
         // init the map
         // create the map for
@@ -61,7 +61,9 @@ public class HazelcastFeedCacheManager implements FeedCacheManager {
                 "    'valueFormat'='json'\n" +
                 ")");
         IMap<Long, HazelcastJsonValue> map = hazelcast.getMap(mapName);
-        map.addIndex(IndexType.SORTED, "priority", "updatedOnTimeStamp");
+        map.addIndex(IndexType.SORTED, "priority");
+        map.addIndex(IndexType.SORTED, "updatedOnTimeStamp");
+
         if(map.size() >= MAX_POST_PER_CLIENT) {
             List<PostForm> toDeletePosts =  getPosts(userId, COUNT_TO_DELETE_ON_FULL, SortDirection.asc, SortDirection.asc);
             for(PostForm deletePost : toDeletePosts) {
@@ -72,11 +74,11 @@ public class HazelcastFeedCacheManager implements FeedCacheManager {
     }
 
     @Override
-    public List<PostForm> getUserFeed(Long userId, int limit) {
+    public List<PostForm> getUserFeed(Long userId, int limit) throws Exception{
         return getPosts(userId, limit, SortDirection.desc, SortDirection.asc);
     }
 
-    public List<PostForm> getPosts(Long userId, int limit, SortDirection prioritySortDirection, SortDirection updateDateSortDirection) {
+    public List<PostForm> getPosts(Long userId, int limit, SortDirection prioritySortDirection, SortDirection updateDateSortDirection) throws JsonProcessingException {
         List<PostForm> postForms = new ArrayList<>();
         String mapName = "UserWall"+userId;
 
@@ -91,6 +93,7 @@ public class HazelcastFeedCacheManager implements FeedCacheManager {
             SqlRow row = itr.next();
             HazelcastJsonValue hazelcastJsonValue = (HazelcastJsonValue) row.getObject("post");
             System.out.println((HazelcastJsonValue) row.getObject("post"));
+            postForms.add(objectMapper.readValue(hazelcastJsonValue.getValue(), PostForm.class));
         }
         return postForms;
     }

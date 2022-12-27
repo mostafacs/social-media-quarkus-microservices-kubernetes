@@ -19,7 +19,7 @@ public interface FeedCacheManager {
 
     boolean isFull(Long userId);
 
-    void addToUserFeed(Long userId, PostForm userForm) throws JsonProcessingException;
+    void addToUserFeed(Long userId, PostForm userForm) throws Exception;
 
-    List<PostForm> getUserFeed(Long userId, int limit);
+    List<PostForm> getUserFeed(Long userId, int limit) throws Exception;
 }

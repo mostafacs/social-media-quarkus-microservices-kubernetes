@@ -20,22 +20,23 @@ public class PostUpdateHandler {
     @Inject
     FeedCacheManager feedCacheManager;
 
-//    @Inject
-//    PostService postService;
+    @Inject
+    PostService postService;
 
     @Inject
     EntityManager em;
 
     // update post priority and set to cache
-    @Incoming("post-updated")
+    @Incoming("posts-in")
     public void consumeAddPost(Long postId) {
         // process post.
     }
 
-    @Incoming("zero-priority-post")
-    public void zeroPriorityPost(Long postId) {
-        Post post = em.find(Post.class, postId);
-        PostForm form = PostMapper.mapper.toForm(post);
-        form.setPriority(0);
-    }
+//    @Incoming("zero-priority-post")
+//    public void zeroPriorityPost(Long postId) {
+//        Post post = em.find(Post.class, postId);
+//        PostForm form = PostMapper.mapper.toForm(post);
+//        form.setPriority(0);
+//        //feedCacheManager.addToUserFeed();
+//    }
 }

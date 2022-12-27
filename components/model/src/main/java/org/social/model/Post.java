@@ -2,7 +2,10 @@ package org.social.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.social.converter.ImageAttributeConverter;
+
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -39,7 +42,7 @@ public class Post {
     private User user;
 
     @Column(name = "`images`")
-    // @Convert(converter = )
+    @Convert(converter = ImageAttributeConverter.class)
     private List<String> images; // image urls
 
     // to keep performance

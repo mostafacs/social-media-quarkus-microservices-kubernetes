@@ -32,7 +32,7 @@ public class Friendship {
     User user1;
 
     @ManyToOne
-    @JoinColumn(name = "user1")
+    @JoinColumn(name = "user2")
     User user2;
 
     @Temporal(TemporalType.TIMESTAMP)

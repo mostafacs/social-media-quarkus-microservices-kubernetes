@@ -2,9 +2,11 @@ package org.social.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.social.converter.ImageAttributeConverter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,7 +42,7 @@ public class Comment {
     private String commentText;
 
     @Column(name = "`images`")
-    // @Convert
+    @Convert(converter = ImageAttributeConverter.class)
     private List<String> images;
 
 }
