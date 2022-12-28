@@ -8,12 +8,9 @@ import com.hazelcast.core.HazelcastJsonValue;
 import com.hazelcast.map.IMap;
 import com.hazelcast.sql.SqlResult;
 import com.hazelcast.sql.SqlRow;
-import io.quarkus.arc.Unremovable;
-import org.social.form.PostForm;
-
+import org.social.form.PostFeedCache;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,21 +34,21 @@ public class HazelcastFeedCacheManager implements FeedCacheManager {
 
     @Override
     public int size(Long userId) {
-        String mapName = "UserWall"+userId;
+        String mapName = USER_FEED_PREFIX+userId;
         IMap<Long, HazelcastJsonValue> map = hazelcast.getMap(mapName);
         return map.size();
     }
 
     @Override
     public boolean isFull(Long userId) {
-        String mapName = "UserWall"+userId;
+        String mapName = USER_FEED_PREFIX+userId;
         IMap<Long, HazelcastJsonValue> map = hazelcast.getMap(mapName);
         return map.size() < MAX_POST_PER_CLIENT;
     }
 
     @Override
-    public void addToUserFeed(Long userId, PostForm post) throws Exception {
-        String mapName = "UserWall"+userId;
+    public void addToUserFeed(Long userId, PostFeedCache post) throws Exception {
+        String mapName = USER_FEED_PREFIX+userId;
         // init the map
         // create the map for
         hazelcast.getSql().execute("CREATE MAPPING IF NOT EXISTS "+ mapName +" \n" +
@@ -65,22 +62,22 @@ public class HazelcastFeedCacheManager implements FeedCacheManager {
         map.addIndex(IndexType.SORTED, "updatedOnTimeStamp");
 
         if(map.size() >= MAX_POST_PER_CLIENT) {
-            List<PostForm> toDeletePosts =  getPosts(userId, COUNT_TO_DELETE_ON_FULL, SortDirection.asc, SortDirection.asc);
-            for(PostForm deletePost : toDeletePosts) {
-                map.remove(deletePost.getId());
+            List<PostFeedCache> toDeletePosts =  getUserFeed(userId, COUNT_TO_DELETE_ON_FULL, SortDirection.asc, SortDirection.asc);
+            for(PostFeedCache deletePost : toDeletePosts) {
+                map.remove(deletePost.getPostId());
             }
         }
-        map.put(post.getId(), new HazelcastJsonValue(objectMapper.writeValueAsString(post)));
+        map.put(post.getPostId(), new HazelcastJsonValue(objectMapper.writeValueAsString(post)));
     }
 
     @Override
-    public List<PostForm> getUserFeed(Long userId, int limit) throws Exception{
-        return getPosts(userId, limit, SortDirection.desc, SortDirection.asc);
+    public List<PostFeedCache> getUserFeed(Long userId, int limit) throws Exception{
+        return getUserFeed(userId, limit, SortDirection.desc, SortDirection.asc);
     }
 
-    public List<PostForm> getPosts(Long userId, int limit, SortDirection prioritySortDirection, SortDirection updateDateSortDirection) throws JsonProcessingException {
-        List<PostForm> postForms = new ArrayList<>();
-        String mapName = "UserWall"+userId;
+    private List<PostFeedCache> getUserFeed(Long userId, int limit, SortDirection prioritySortDirection, SortDirection updateDateSortDirection) throws JsonProcessingException {
+        List<PostFeedCache> postForms = new ArrayList<>();
+        String mapName = USER_FEED_PREFIX+userId;
 
         Long startTime = System.currentTimeMillis();
         SqlResult sqlResult = hazelcast.getSql().execute("SELECT JSON_QUERY(this, '$') as post FROM "+ mapName +
@@ -93,7 +90,7 @@ public class HazelcastFeedCacheManager implements FeedCacheManager {
             SqlRow row = itr.next();
             HazelcastJsonValue hazelcastJsonValue = (HazelcastJsonValue) row.getObject("post");
             System.out.println((HazelcastJsonValue) row.getObject("post"));
-            postForms.add(objectMapper.readValue(hazelcastJsonValue.getValue(), PostForm.class));
+            postForms.add(objectMapper.readValue(hazelcastJsonValue.getValue(), PostFeedCache.class));
         }
         return postForms;
     }

@@ -5,6 +5,8 @@ import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.social.caching.FeedCacheManager;
+import org.social.caching.PostCacheManager;
+import org.social.form.PostFeedCache;
 import org.social.form.PostForm;
 import org.social.model.Post;
 import org.social.post.mapper.PostMapper;
@@ -12,6 +14,7 @@ import org.social.services.PostService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +23,8 @@ import java.util.List;
  */
 @Singleton
 public class FeedService {
+
+    public static final int DEFAULT_POST_COMMENTS_CACHE = 5;
 
     @ConfigProperty(name = "new-posts-priority")
     int newPostsPriority;
@@ -34,8 +39,15 @@ public class FeedService {
     FeedCacheManager feedCacheManager;
 
     @Inject
+    PostCacheManager postCacheManager;
+
+    @Inject
     @Channel("posts-out")
     Emitter<PostForm> postEmitter;
+
+    @Inject
+    @Channel("zero-priority-posts-out")
+    Emitter<PostForm> zeroPriorityPostsEmitter;
 
     PostMapper postMapper = PostMapper.mapper;
 
@@ -49,6 +61,16 @@ public class FeedService {
 
 
     public List<PostForm> getFeed(long userId) throws Exception {
-        return feedCacheManager.getUserFeed(userId, userFeedPageSize);
+        List<PostFeedCache> feeds = feedCacheManager.getUserFeed(userId, userFeedPageSize);
+        List<PostForm> posts = new ArrayList<>(feeds.size());
+        for(PostFeedCache pfc : feeds) {
+            PostForm post = postCacheManager.getPost(pfc.getPostId());
+            if(post == null) {
+                post = postService.getPostForm(pfc.getPostId(), DEFAULT_POST_COMMENTS_CACHE);
+            }
+            posts.add(post);
+            zeroPriorityPostsEmitter.send(post);
+        }
+        return posts;
     }
 }
