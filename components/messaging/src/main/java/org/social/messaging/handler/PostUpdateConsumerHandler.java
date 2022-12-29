@@ -1,14 +1,13 @@
-package org.social.messaging;
+package org.social.messaging.handler;
 
 import org.eclipse.microprofile.reactive.messaging.Incoming;
-import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.social.caching.FeedCacheManager;
 import org.social.caching.PostCacheManager;
 import org.social.form.PostFeedCache;
 import org.social.form.PostForm;
-import org.social.services.PostService;
+import org.social.form.ZeroPriorityPost;
 import org.social.services.UserService;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -67,11 +66,13 @@ public class PostUpdateConsumerHandler {
     }
 
     @Incoming("zero-priority-post")
-    //TODO update the wall for consumed user only
-    // TODO create a new Pojo for this consumer
-    public PostForm zeroPriorityPost(PostForm post) {
-        //TODO
-        post.setPriority(0);
-        return post;
+    public void zeroPriorityPost(ZeroPriorityPost post) {
+        if(!feedCacheManager.isFull(post.getUserId())) {
+            try {
+                feedCacheManager.addToUserFeed(post.getUserId(), post.getPostFeedCache());
+            } catch (Exception e) {
+                logger.error(String.format("Error while zero priority set post [%d] to user [%d] Feed", post.getPostFeedCache().getPostId(), post.getUserId()), e);
+            }
+        }
     }
 }

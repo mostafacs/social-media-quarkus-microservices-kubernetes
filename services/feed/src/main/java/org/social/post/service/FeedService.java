@@ -59,6 +59,14 @@ public class FeedService {
         postEmitter.send(Message.of(postForm));
     }
 
+    public PostForm getPost(Long postId) throws Exception {
+        PostForm post = postCacheManager.getPost(postId);
+        if(post == null) {
+            post = postService.getPostForm(postId, DEFAULT_POST_COMMENTS_CACHE);
+        }
+        return post;
+    }
+
 
     public List<PostForm> getFeed(long userId) throws Exception {
         List<PostFeedCache> feeds = feedCacheManager.getUserFeed(userId, userFeedPageSize);
