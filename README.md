@@ -1,5 +1,14 @@
 # Social Media Platform
 
+
+### Login curl
+
+```shell
+   curl --insecure -X POST http://localhost:8080/realms/social/protocol/openid-connect/token \
+    --user backend-service:ZEGieh1cMBxxtIbEHwWJ3U7PODSMUoYI \
+    -H 'content-type: application/x-www-form-urlencoded' \
+    -d 'username=mostafa3@gmail.com&password=123&grant_type=password'
+```
 ### Start Hazelcast cluster
 
 docker run --rm -p 8180:8080 hazelcast/management-center:5.1.4

@@ -5,7 +5,7 @@ package org.social.constants;
  * On 11/28/22
  */
 public interface SecurityConstants {
-    String REALM = "main";
+    String REALM = "social";
 
     String ROLE_USER = "user";
 }
