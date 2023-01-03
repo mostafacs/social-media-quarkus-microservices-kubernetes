@@ -1,5 +1,6 @@
-package org.social.model;
+package org.social.auth;
 
+import org.keycloak.representations.AccessTokenResponse;
 import org.social.constants.SecurityConstants;
 import org.social.form.UserForm;
 import org.keycloak.admin.client.Keycloak;
@@ -54,5 +55,12 @@ public class RegisterController {
         Response response = keycloak.realm(SecurityConstants.REALM).users().create(user);
 
        return Response.status(response.getStatus()).entity(response.getEntity()).build();
+    }
+
+    @GET
+    @Path("/login")
+    public Response login() {
+        AccessTokenResponse response = keycloak.tokenManager().getAccessToken();
+        return Response.ok(response).build();
     }
 }
