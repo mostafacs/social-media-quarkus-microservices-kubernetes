@@ -29,7 +29,7 @@
         <module>components/framework</module>
         <module>components/caching</module>
         <module>components/messaging</module>
-        <module>services/authentication</module>
+        <module>services/users</module>
         <module>services/feed</module>
     </modules>
 
@@ -72,6 +72,19 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-keycloak-authorization</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-reactive</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-kubernetes</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-container-image-jib</artifactId>
         </dependency>
 
         <dependency>
@@ -131,6 +144,14 @@
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
             <plugin>
