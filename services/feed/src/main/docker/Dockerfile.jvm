@@ -7,7 +7,7 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/getting-started-jvm .
+# docker build -f src/main/docker/Dockerfile.jvm -t social/feed .
 #
 # Then run the container using:
 #

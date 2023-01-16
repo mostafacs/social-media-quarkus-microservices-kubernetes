@@ -1,6 +1,32 @@
 # Social Media Platform
 
 
+## Run App Locally
+
+#### using minikube docker environment
+
+```shell
+minikube start
+eval $(minikube docker-env)
+docker build -f src/main/docker/Dockerfile.jvm -t social/feed:1.0 .
+cd social-media-quarkus-kubernetes/services/feed
+kubectl apply -f target/kubernetes/kubernetes.yml
+```
+
+#### or using local registry
+```shell
+docker run -d -p 5000:5000 --name registry registry:2.7
+minikube start --cpus 4 --memory 4096 --insecure-registry localhost:5000
+cd social-media-quarkus-kubernetes/services/feed
+docker build -f src/main/docker/Dockerfile.jvm -t social/feed:1.0 .
+docker tag  social/feed:1.0 localhost:5000/social/feed:1.0
+docker push localhost:5000/social/feed
+kubectl apply -f target/kubernetes/kubernetes.yml
+```
+## Access feed service
+```shell
+minikube service feed
+```
 ### Login curl
 
 ```shell
@@ -32,3 +58,10 @@ kubectl get service hz-hazelcast
 [Service Per Pod and More Details](https://docs.hazelcast.com/tutorials/kubernetes-external-client)
 
 https://github.com/kubernetes-sigs/kustomize
+
+
+## Clean up
+```shell
+kubectl delete -f target/kubernetes/kubernetes.yml
+
+```
