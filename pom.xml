@@ -29,6 +29,8 @@
         <module>components/framework</module>
         <module>components/caching</module>
         <module>components/messaging</module>
+        <module>components/deployment</module>
+
         <module>services/users</module>
         <module>services/feed</module>
     </modules>
