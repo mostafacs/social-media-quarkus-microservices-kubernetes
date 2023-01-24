@@ -1,4 +1,8 @@
 ```shell
+
+kubectl exec -it <pod_name> bash
+
+
 minikube tunnel
 kubectl get pods
 kubectl describe pods
