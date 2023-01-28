@@ -2,15 +2,23 @@
 
 
 ## Run App Locally
+Start Docker Desktop:
+```shell
+docker compose up
+```
 
 #### using minikube docker environment
 
 ```shell
+# Start minikube cluster
 minikube start
+
+# User minikube docker environment
 eval $(minikube docker-env)
-cd social-media-quarkus-kubernetes/services/feed
-docker build -f src/main/docker/Dockerfile.jvm -t social/feed:1.0 .
-kubectl apply -f target/kubernetes/kubernetes.yml
+
+# Build project jars and docker images
+mvn clean install -Dquarkus.container-image.build=true
+
 ```
 
 #### or using local registry
@@ -23,8 +31,11 @@ docker tag  social/feed:1.0 localhost:5000/social/feed:1.0
 docker push localhost:5000/social/feed
 kubectl apply -f target/kubernetes/kubernetes.yml
 ```
-## Access feed service
+
+## Feed Service
 ```shell
+cd social-media-quarkus-kubernetes/services/feed
+kubectl apply -f target/kubernetes/kubernetes.yml
 minikube service feed
 ```
 ### Login curl

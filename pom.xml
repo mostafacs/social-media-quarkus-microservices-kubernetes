@@ -29,7 +29,6 @@
         <module>components/framework</module>
         <module>components/caching</module>
         <module>components/messaging</module>
-        <module>components/deployment</module>
 
         <module>services/users</module>
         <module>services/feed</module>
@@ -87,6 +86,10 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-container-image-jib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-minikube</artifactId>
         </dependency>
 
         <dependency>
