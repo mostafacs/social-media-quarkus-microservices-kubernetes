@@ -10,10 +10,17 @@ import javax.ws.rs.core.MediaType;
  * @Author Mostafa
  * On 1/15/23
  */
-@Path("/ping")
+@Path("/")
 @Produces(MediaType.TEXT_HTML)
 public class PingController {
 
+    @GET
+    public String hello() {
+        System.out.println("hello .......");
+        return "hello";
+    }
+
+    @Path("/ping")
     @GET
     public String ping() {
         System.out.println("Ping .......");

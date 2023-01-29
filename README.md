@@ -4,6 +4,7 @@
 ## Run App Locally
 Start Docker Desktop:
 ```shell
+cd social-media-quarkus-kubernetes
 docker compose up
 ```
 
@@ -12,13 +13,12 @@ docker compose up
 ```shell
 # Start minikube cluster
 minikube start
-
 # User minikube docker environment
 eval $(minikube docker-env)
 
+cd ${project-root-folder}
 # Build project jars and docker images
 mvn clean install -Dquarkus.container-image.build=true
-
 ```
 
 #### or using local registry
@@ -32,12 +32,34 @@ docker push localhost:5000/social/feed
 kubectl apply -f target/kubernetes/kubernetes.yml
 ```
 
-## Feed Service
+Add Certificates for Ingress-Nginx 
+```shell
+cd kubernetes/certificate
+kubectl create secret tls ingress-tls --key certificate.key --cert cert.pem
+```
+ 
+Apply secrets, config-maps and ingress configurations
+```shell
+kubectl apply -f kubernetes/config
+```
+
+Deploy Feed and User Service
 ```shell
 cd social-media-quarkus-kubernetes/services/feed
 kubectl apply -f target/kubernetes/kubernetes.yml
-minikube service feed
+
+cd social-media-quarkus-kubernetes/services/user
+kubectl apply -f target/kubernetes/kubernetes.yml
 ```
+ Run minikube tunnel to access the ingress controller
+```shell
+minikube tunnel
+```
+Update your /etc/hosts file and add the following line:
+```shell
+127.0.0.1 social-test.app
+```
+
 ### Login curl
 
 ```shell
@@ -46,33 +68,6 @@ minikube service feed
     -H 'content-type: application/x-www-form-urlencoded' \
     -d 'username=mostafa3@gmail.com&password=123&grant_type=password'
 ```
-### Start Hazelcast cluster
-
-docker run --rm -p 8180:8080 hazelcast/management-center:5.1.4
-
-```shell
-# install hazelcast images in minikube docker
-minikube ssh docker pull hazelcast/hazelcast:5.2.0
-minikube ssh docker pull hazelcast/management-center:5.2.0
-
-minikube image load feed-service
-
-# start  hazelcast cluster
-helm repo add hazelcast https://hazelcast-charts.s3.amazonaws.com/
-helm repo update
-helm install hz-hazelcast -f hazelcast-helm.yaml hazelcast/hazelcast
-helm install hz-hazelcast --set service.type=LoadBalancer hazelcast/hazelcast
-
-# Now the hazelcast cluster is ready get the external ip address to be used on the client connector
-kubectl get service hz-hazelcast
-```
-[Service Per Pod and More Details](https://docs.hazelcast.com/tutorials/kubernetes-external-client)
 
 https://github.com/kubernetes-sigs/kustomize
 
-
-## Clean up
-```shell
-kubectl delete -f target/kubernetes/kubernetes.yml
-
-```
