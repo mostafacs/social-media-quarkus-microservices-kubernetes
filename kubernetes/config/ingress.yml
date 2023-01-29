@@ -10,11 +10,11 @@ metadata:
 spec:
   tls:
     - hosts:
-        - '*.social-test.app'
-        - 'social-test.app'
+        - '*.social.app'
+        - 'social.app'
       secretName: ingress-tls
   rules:
-    - host: social-test.app
+    - host: social.app
       http:
         paths:
           - path: /user(/|$)(.*)

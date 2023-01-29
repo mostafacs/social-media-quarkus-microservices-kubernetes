@@ -25,7 +25,7 @@ mvn clean install -Dquarkus.container-image.build=true
 ```shell
 docker run -d -p 5000:5000 --name registry registry:2.7
 minikube start --cpus 4 --memory 4096 --insecure-registry localhost:5000
-cd social-media-quarkus-kubernetes/services/feed
+cd services/feed
 docker build -f src/main/docker/Dockerfile.jvm -t social/feed:1.0 .
 docker tag  social/feed:1.0 localhost:5000/social/feed:1.0
 docker push localhost:5000/social/feed
@@ -45,10 +45,10 @@ kubectl apply -f kubernetes/config
 
 Deploy Feed and User Service
 ```shell
-cd social-media-quarkus-kubernetes/services/feed
+cd services/feed
 kubectl apply -f target/kubernetes/kubernetes.yml
 
-cd social-media-quarkus-kubernetes/services/user
+cd services/user
 kubectl apply -f target/kubernetes/kubernetes.yml
 ```
  Run minikube tunnel to access the ingress controller
@@ -57,9 +57,13 @@ minikube tunnel
 ```
 Update your /etc/hosts file and add the following line:
 ```shell
-127.0.0.1 social-test.app
+127.0.0.1 social.app
 ```
-
+### Now you can access the app using:
+```shell
+curl https://social.app/feed/{{endpoint path}}
+curl https://social.app/user/{{endpoint path}}
+````
 ### Login curl
 
 ```shell
@@ -68,6 +72,3 @@ Update your /etc/hosts file and add the following line:
     -H 'content-type: application/x-www-form-urlencoded' \
     -d 'username=mostafa3@gmail.com&password=123&grant_type=password'
 ```
-
-https://github.com/kubernetes-sigs/kustomize
-

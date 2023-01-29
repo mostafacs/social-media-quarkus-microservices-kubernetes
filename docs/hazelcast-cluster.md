@@ -19,3 +19,9 @@ helm install hz-hazelcast --set service.type=LoadBalancer hazelcast/hazelcast
 kubectl get service hz-hazelcast
 ```
 [Service Per Pod and More Details](https://docs.hazelcast.com/tutorials/kubernetes-external-client)
+
+Delete hazelcast
+```shell
+helm uninstall hz-hazelcast
+
+```
