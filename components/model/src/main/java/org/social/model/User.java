@@ -25,6 +25,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "profile_image_url")
+    String profileImageUrl;
+
     @Column
     String firstname;
 
@@ -37,11 +40,15 @@ public class User {
     @Column
     String email;
 
-    @Column
-    String password;
+    @Column(name = "keycloak_id")
+    String keycloakId;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "joined_on")
     Date joinedOn;
+
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "updated_on")
+    Date updatedOn;
 
 }

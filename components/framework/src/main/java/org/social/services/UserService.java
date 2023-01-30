@@ -1,8 +1,11 @@
 package org.social.services;
 
+import org.social.model.User;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -14,7 +17,6 @@ public class UserService {
 
     @Inject
     EntityManager em;
-
 
     public List<Long> getFriends(Long userId, int page, int pageSize) {
         return em.createQuery("select if(fs.user1.id = :userId, fs.user2.id, fs.user1.id) as friendId from Friendship fs where fs.user1.id=:userId or fs.user2.id=:userId", Long.class)

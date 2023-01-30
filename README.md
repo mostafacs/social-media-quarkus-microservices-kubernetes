@@ -68,7 +68,7 @@ curl https://social.app/user/{{endpoint path}}
 
 ```shell
    curl --insecure -X POST http://localhost:8080/realms/social/protocol/openid-connect/token \
-    --user backend-service:ZEGieh1cMBxxtIbEHwWJ3U7PODSMUoYI \
+    --user backend-service:drMIoXAkomvdWhS4lZCM6IkmZ6TRJQ0h \
     -H 'content-type: application/x-www-form-urlencoded' \
-    -d 'username=mostafa3@gmail.com&password=123&grant_type=password'
+    -d 'username=ahmed.asal@gmail.com&password=123&grant_type=password'
 ```

@@ -6,6 +6,6 @@ package org.social.constants;
  */
 public interface SecurityConstants {
     String REALM = "social";
-
     String ROLE_USER = "user";
+    String USER_ID_ATTRIBUTE = "userId";
 }

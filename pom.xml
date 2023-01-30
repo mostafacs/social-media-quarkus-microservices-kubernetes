@@ -30,8 +30,8 @@
         <module>components/caching</module>
         <module>components/messaging</module>
 
-        <module>services/users</module>
         <module>services/feed</module>
+        <module>services/users</module>
     </modules>
 
     <dependencyManagement>

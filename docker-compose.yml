@@ -3,16 +3,15 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: host.docker.internal
-      DB_DATABASE: keycloak
-      DB_USER: root
-      DB_PASSWORD: test123
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://host.docker.internal:3306/keycloak
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: test123
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the MySQL JDBC driver documentation in order to use it.
       #JDBC_PARAMS: "connectTimeout=30000"
-    command: [ "start-dev", "--http-port=8080" ]
+    command: [ "start-dev", "--http-port=8080"]
     ports:
       - 8080:8080
 
