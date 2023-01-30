@@ -2,6 +2,8 @@ version: '3'
 services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
+    volumes:
+    - ./docker/volumes/keycloak:/opt/keycloak/data/import
     environment:
       KC_DB: mysql
       KC_DB_URL: jdbc:mysql://host.docker.internal:3306/keycloak
@@ -11,7 +13,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
       # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the MySQL JDBC driver documentation in order to use it.
       #JDBC_PARAMS: "connectTimeout=30000"
-    command: [ "start-dev", "--http-port=8080"]
+    command: [ "start-dev", "--http-port=8080", "--import-realm"]
     ports:
       - 8080:8080
 
