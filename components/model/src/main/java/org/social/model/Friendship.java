@@ -20,7 +20,7 @@ import java.util.Date;
  * On 12/24/22
  */
 @Entity
-@Table(name = "friend_ship")
+@Table(name = "friendship")
 @Getter @Setter
 public class Friendship {
     @Id

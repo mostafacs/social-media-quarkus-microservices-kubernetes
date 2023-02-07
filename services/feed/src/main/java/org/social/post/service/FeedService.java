@@ -18,6 +18,7 @@ import org.social.services.UserService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,11 +60,15 @@ public class FeedService {
 
     public void submitPost(PostForm postForm, Long userId) {
         Post post = postMapper.toEntity(postForm);
+        if(post.getCreatedOn() == null) {
+            post.setCreatedOn(new Date());
+        }
+        post.setUpdatedOn(new Date());
         User user = userService.getUser(userId);
         post.setUser(user);
         postService.save(post);
-        postForm.setId(post.getId());
-        postForm.setUser(UserForm.fromEntity(user));
+        postForm = postMapper.toForm(post);
+        // it's important to set priority to get the post in the top of the queue
         postForm.setPriority(newPostsPriority);
         postEmitter.send(Message.of(postForm));
     }
