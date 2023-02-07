@@ -9,6 +9,7 @@ import org.social.form.UserForm;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,11 +30,12 @@ public class KeycloakService {
         // client credential
         CredentialRepresentation credential = new CredentialRepresentation();
         credential.setType(CredentialRepresentation.PASSWORD);
-        credential.setValue(form.password());
+        credential.setValue(form.getPassword());
         credential.setTemporary(false);
 
         userRep.setCredentials(Collections.singletonList(credential));
         userRep.setRealmRoles(Collections.singletonList(SecurityConstants.ROLE_USER));
+        userRep.setClientRoles(Collections.singletonMap(SecurityConstants.ROLE_USER, new ArrayList<>()));
         userRep.setEnabled(true);
         userRep.setEmailVerified(true); // for now
 
@@ -59,9 +61,9 @@ public class KeycloakService {
     }
 
     private void fillUserRepresentation(UserRepresentation userRep, UserForm form) {
-        userRep.setEmail(form.email());
-        userRep.setFirstName(form.firstname());
-        userRep.setLastName(form.lastname());
-        userRep.setUsername(form.username());
+        userRep.setEmail(form.getEmail());
+        userRep.setFirstName(form.getFirstname());
+        userRep.setLastName(form.getLastname());
+        userRep.setUsername(form.getUsername());
     }
 }

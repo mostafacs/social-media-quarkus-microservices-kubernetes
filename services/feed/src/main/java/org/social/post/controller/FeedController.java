@@ -13,7 +13,7 @@ import java.util.List;
  * @Author Mostafa
  * On 12/29/22
  */
-@Path("/feed")
+@Path("/get")
 public class FeedController {
 
     @Inject

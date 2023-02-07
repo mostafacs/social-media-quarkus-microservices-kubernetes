@@ -18,6 +18,7 @@ import java.util.Date;
  * On 11/28/22
  */
 @Entity
+@Table(name = "user")
 @Getter @Setter
 public class User {
 

@@ -5,12 +5,14 @@ import org.social.mapper.CommentMapper;
 import org.social.mapper.PostMapper;
 import org.social.model.Comment;
 import org.social.model.Post;
+import org.social.model.User;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +30,7 @@ public class PostService {
 
     @Transactional
     public Post save(Post post) {
+        post.setUpdatedOn(new Date());
         em.persist(post);
         return post;
     }

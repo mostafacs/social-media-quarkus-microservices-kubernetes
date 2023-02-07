@@ -1,5 +1,19 @@
 # Social Media Platform
 
+## About Project
+Implementation for social media network system using Java, Quarkus, Kafka and Hazelcast (for caching). 
+I tried to write code in best practice software development and implement the architecture to achieve project security and resilience.
+
+
+## Project Architecture
+Goal: Load user feedand add new feed too fast
+### Add Post
+![Add post architecture](docs/add.post.png)
+
+### Load user feed
+![Loading user feed architecture](docs/load-feed.png)
+
+** Note: I'm not using every service as a cache node instead I imagined there is a hazelcast cluster contains a separated nodes (pods) for caching.
 
 ## Run App Locally
 Start Docker Desktop:
@@ -70,5 +84,5 @@ curl https://social.app/user/{{endpoint path}}
    curl --insecure -X POST http://localhost:8080/realms/social/protocol/openid-connect/token \
     --user backend-service:drMIoXAkomvdWhS4lZCM6IkmZ6TRJQ0h \
     -H 'content-type: application/x-www-form-urlencoded' \
-    -d 'username=ahmed.asal@gmail.com&password=123&grant_type=password'
+    -d 'username=mostafa&password=123&grant_type=password'
 ```

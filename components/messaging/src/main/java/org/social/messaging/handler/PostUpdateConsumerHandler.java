@@ -12,7 +12,6 @@ import org.social.services.UserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -31,9 +30,6 @@ public class PostUpdateConsumerHandler {
     @Inject
     UserService userService;
 
-    @Inject
-    EntityManager em;
-
     Logger logger = LoggerFactory.getLogger(PostUpdateConsumerHandler.class);
 
     /**
@@ -41,7 +37,7 @@ public class PostUpdateConsumerHandler {
      * @param postForm
      */
     // update post priority and set to cache
-    @Incoming("posts-in")
+    @Incoming("feeds-in")
     public void consumeAddPost(PostForm postForm) {
         // process post.
         try {
@@ -51,7 +47,7 @@ public class PostUpdateConsumerHandler {
         }
         int page = 0;
         int pageSize = 100;
-        Long postOwnerId = postForm.getUser().id();
+        Long postOwnerId = postForm.getUser().getId();
         List<Long> friends;
         do {
             friends = userService.getFriends(postOwnerId, page, pageSize);
@@ -59,13 +55,13 @@ public class PostUpdateConsumerHandler {
                 try {
                     feedCacheManager.addToUserFeed(friend, PostFeedCache.fromPostForm(postForm, postForm.getPriority()));
                 } catch (Exception e) {
-                    logger.error(String.format("Error while adding post [%d] to user [%d] Feed", postForm.getId(), postForm.getUser().id()), e);
+                    logger.error(String.format("Error while adding post [%d] to user [%d] Feed", postForm.getId(), postForm.getUser().getId()), e);
                 }
             }
         } while (friends.size() >= pageSize);
     }
 
-    @Incoming("zero-priority-post")
+    @Incoming("zero-priority-in")
     public void zeroPriorityPost(ZeroPriorityPost post) {
         if(!feedCacheManager.isFull(post.getUserId())) {
             try {

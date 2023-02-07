@@ -35,16 +35,9 @@ public class UserManagerService {
 
     @Transactional
     public User addNewUser(UserForm form) throws Exception{
-        User user = new User();
-        user.setUsername(form.username());
-        user.setFirstname(form.firstname());
-        user.setLastname(form.lastname());
-        user.setEmail(form.email());
-        user.setProfileImageUrl(form.profileImageUrl());
-        user.setJoinedOn(new Date());
-        user.setUpdatedOn(new Date());
+        User user = form.toEntity();
         em.persist(user);
-
+        // save to keycloak
         Response response = keycloakService.addUser(form, user.getId());
 
         if(!response.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {
@@ -52,7 +45,7 @@ public class UserManagerService {
             throw new Exception("Error creating new user");
         }
         // response.getKeycloakUserId
-        UserRepresentation userRep = keycloakService.getUserByUsername(form.username());
+        UserRepresentation userRep = keycloakService.getUserByUsername(form.getUsername());
         if(userRep != null) {
             user.setKeycloakId(userRep.getId());
             em.persist(user);

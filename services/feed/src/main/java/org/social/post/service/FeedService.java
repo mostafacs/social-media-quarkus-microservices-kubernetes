@@ -8,9 +8,12 @@ import org.social.caching.FeedCacheManager;
 import org.social.caching.PostCacheManager;
 import org.social.form.PostFeedCache;
 import org.social.form.PostForm;
+import org.social.form.UserForm;
 import org.social.model.Post;
+import org.social.model.User;
 import org.social.post.mapper.PostMapper;
 import org.social.services.PostService;
+import org.social.services.UserService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -36,25 +39,31 @@ public class FeedService {
     PostService postService;
 
     @Inject
+    UserService userService;
+
+    @Inject
     FeedCacheManager feedCacheManager;
 
     @Inject
     PostCacheManager postCacheManager;
 
     @Inject
-    @Channel("posts-out")
+    @Channel("feeds-out")
     Emitter<PostForm> postEmitter;
 
     @Inject
-    @Channel("zero-priority-posts-out")
+    @Channel("zero-priority-out")
     Emitter<PostForm> zeroPriorityPostsEmitter;
 
     PostMapper postMapper = PostMapper.mapper;
 
-    public void submitPost(PostForm postForm) {
+    public void submitPost(PostForm postForm, Long userId) {
         Post post = postMapper.toEntity(postForm);
+        User user = userService.getUser(userId);
+        post.setUser(user);
         postService.save(post);
         postForm.setId(post.getId());
+        postForm.setUser(UserForm.fromEntity(user));
         postForm.setPriority(newPostsPriority);
         postEmitter.send(Message.of(postForm));
     }
