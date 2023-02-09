@@ -4,7 +4,12 @@
 Implementation for social media network system using Java, Quarkus, Kafka and Hazelcast (for caching). 
 I tried to write code in best practice software development and implement the architecture to achieve project security and resilience.
 
-
+## Technology Stack
+1- Mysql (DB)
+2- Kafka (help in processing users feed in the background)
+3- Hazelcast for cache user feeds and Post caching too.
+4- Keycloak project security (Authentication and Authorization)
+5- Java (Quarkus, JPA, ...)
 ## Project Architecture
 Goal: Load user feedand add new feed too fast
 ### Add Post
@@ -15,8 +20,12 @@ Goal: Load user feedand add new feed too fast
 
 ** Note: I'm not using every service as a cache node instead I imagined there is a hazelcast cluster contains a separated nodes (pods) for caching.
 
-## Run App Locally
-Start Docker Desktop:
+## Run App Locally on k8s
+
+You need to have MYSQL database installed on your machine and add two schemas (social_media, keycloak), docker desktop, docker compose and minikube
+
+** Be sure you have Docker Desktop started:
+
 ```shell
 cd social-media-quarkus-kubernetes
 docker compose up
@@ -78,14 +87,19 @@ Update your /etc/hosts file and add the following line:
 curl https://social.app/feed/{{endpoint path}}
 curl https://social.app/user/{{endpoint path}}
 ````
-### Test the App
+## Test the App Without k8s
+
+** To test on k8s please replace http://localhost:8010/ to https://social.app/{service}/
+
 1- Register two users
+
+first one
 ```shell
 curl -X POST --location "http://localhost:8010/register" \
     -H "Content-Type: application/json" \
     -d "{\"username\": \"mostafa\", \"password\": \"123\", \"firstname\": \"Mostafa\", \"lastname\": \"Albana\", \"email\": \"mostafa.albana@gmail.com\"}"  
   ```
-the second user
+second user
 
 ```shell
 curl -X POST --location "http://localhost:8010/register" \
@@ -93,7 +107,7 @@ curl -X POST --location "http://localhost:8010/register" \
     -d "{\"username\": \"mostafa2\", \"password\": \"123\", \"firstname\": \"Mostafa2\", \"lastname\": \"Albana2\", \"email\": \"mostafa.albana.2@gmail.com\"}"  
   ```
 
-2- Login (Get the OAuth token from Keycloak)
+2- Login (Get the OAuth token from Keycloak) (Token 1)
 ```shell
    curl --insecure -X POST http://localhost:8080/realms/social/protocol/openid-connect/token \
     --user backend-service:Wbw4dVq74XTlzjfXTIKizFEVodPOPmY4 \
@@ -102,13 +116,13 @@ curl -X POST --location "http://localhost:8010/register" \
 ```
 
 3- Send friend request
-
 ```shell
 curl -X POST --location "http://localhost:8010/friend/send/{to}" \
 -H "Content-Type: application/json" \
--H "Authorization: Bearer ${token}" 
+-H "Authorization: Bearer ${token1}" 
 ```
-Then login with the other user 
+
+4-Then login with the other user (Token2)
 ```shell
    curl --insecure -X POST http://localhost:8080/realms/social/protocol/openid-connect/token \
     --user backend-service:Wbw4dVq74XTlzjfXTIKizFEVodPOPmY4 \
@@ -116,4 +130,24 @@ Then login with the other user
     -d 'username=mostafa2&password=123&grant_type=password'
 ```
 
+5-Confirm friend request
+```shell
+curl -X PUT --location "http://localhost:8010/friend/confirm/{friend-request-id}" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer ${token2}"
+ ```
 
+6-Add New Post for user1 (mostafa)
+```shell
+curl -X POST --location "http://localhost:8020/post" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer ${token1}" \
+-d "{\"postBody\": \"My first post\"}"
+```
+
+7-Get the feed of user2 (mostafa2)
+```shell
+curl -X GET --location "http://localhost:8020/get" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer ${token2}"
+```
