@@ -64,6 +64,7 @@ public class PostUpdateConsumerHandler {
                         logger.error(String.format("Error while adding post [%d] to user [%d] Feed", postForm.getId(), postForm.getUser().getId()), e);
                     }
                 }
+                page++;
             } while (friends.size() >= pageSize);
         } catch (Exception ex) {
             logger.error(String.format("Error updating friends cache for post [%d]", postForm.getId()), ex);
@@ -72,8 +73,10 @@ public class PostUpdateConsumerHandler {
 
     @Incoming("zero-priority-in")
     public void zeroPriorityPost(ZeroPriorityPost post) {
+        if(post.getUserId() == null) return;
         if(!feedCacheManager.isFull(post.getUserId())) {
             try {
+                post.getPostFeedCache().setPriority(0);
                 feedCacheManager.addToUserFeed(post.getUserId(), post.getPostFeedCache());
             } catch (Exception e) {
                 logger.error(String.format("Error while zero priority set post [%d] to user [%d] Feed", post.getPostFeedCache().getPostId(), post.getUserId()), e);

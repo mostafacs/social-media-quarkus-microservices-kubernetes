@@ -43,7 +43,8 @@ public class HazelcastFeedCacheManager implements FeedCacheManager {
     public boolean isFull(Long userId) {
         String mapName = USER_FEED_PREFIX+userId;
         IMap<Long, HazelcastJsonValue> map = hazelcast.getMap(mapName);
-        return map.size() < MAX_POST_PER_CLIENT;
+        int mapSize = map.size();
+        return mapSize >= MAX_POST_PER_CLIENT;
     }
 
     @Override
@@ -82,13 +83,13 @@ public class HazelcastFeedCacheManager implements FeedCacheManager {
         Long startTime = System.currentTimeMillis();
         SqlResult sqlResult = hazelcast.getSql().execute("SELECT JSON_QUERY(this, '$') as post FROM "+ mapName +
                 " order by JSON_VALUE(this, '$.priority' RETURNING int) " + prioritySortDirection.toString() +
-                ",  JSON_VALUE(this, '$.updatedOnTimeStamp' RETURNING int) " + updateDateSortDirection.toString() +
+                ",  JSON_VALUE(this, '$.updatedOnTimeStamp' RETURNING BIGINT) " + updateDateSortDirection.toString() +
                 " LIMIT "+limit); // map.values(Predicates.pagingPredicate(Predicates.alwaysTrue(), 22));
         System.out.println("Executed in "+ (System.currentTimeMillis()-startTime) );
         Iterator<SqlRow> itr =  sqlResult.iterator();
         while (itr.hasNext()) {
             SqlRow row = itr.next();
-            HazelcastJsonValue hazelcastJsonValue = (HazelcastJsonValue) row.getObject("post");
+            HazelcastJsonValue hazelcastJsonValue = row.getObject("post");
             System.out.println((HazelcastJsonValue) row.getObject("post"));
             postForms.add(objectMapper.readValue(hazelcastJsonValue.getValue(), PostFeedCache.class));
         }

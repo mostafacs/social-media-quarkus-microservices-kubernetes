@@ -1,12 +1,11 @@
 package org.social.post.controller;
 
 import io.quarkus.oidc.runtime.OidcJwtCallerPrincipal;
-import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.jwt.auth.principal.ParseException;
 import org.social.constants.SecurityConstants;
 import org.social.form.PostForm;
 import org.social.post.service.FeedService;
-//import org.glassfish.json.Long;
+import org.social.services.UserService;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.json.JsonNumber;
@@ -33,15 +32,12 @@ public class PostController {
     FeedService feedService;
 
     @Inject
-    SecurityIdentity identity;
+    UserService userService;
 
     @RolesAllowed({"user", "admin"})
     @POST
     public Response addNewPost(PostForm postForm, @HeaderParam("Authorization") String tokenStr) throws ParseException {
-
-        OidcJwtCallerPrincipal principal = (OidcJwtCallerPrincipal) identity.getPrincipal();
-        JsonNumber userId = principal.getClaim(SecurityConstants.USER_ID_ATTRIBUTE);
-        feedService.submitPost(postForm, userId.longValue());
+        feedService.submitPost(postForm, userService.currentLoginUserId());
         return Response.ok().build();
     }
 

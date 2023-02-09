@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>mostafa.demo.social</groupId>
-            <artifactId>model</artifactId>
+            <artifactId>framework</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>

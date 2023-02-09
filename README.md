@@ -78,11 +78,42 @@ Update your /etc/hosts file and add the following line:
 curl https://social.app/feed/{{endpoint path}}
 curl https://social.app/user/{{endpoint path}}
 ````
-### Login curl
+### Test the App
+1- Register two users
+```shell
+curl -X POST --location "http://localhost:8010/register" \
+    -H "Content-Type: application/json" \
+    -d "{\"username\": \"mostafa\", \"password\": \"123\", \"firstname\": \"Mostafa\", \"lastname\": \"Albana\", \"email\": \"mostafa.albana@gmail.com\"}"  
+  ```
+the second user
 
 ```shell
+curl -X POST --location "http://localhost:8010/register" \
+    -H "Content-Type: application/json" \
+    -d "{\"username\": \"mostafa2\", \"password\": \"123\", \"firstname\": \"Mostafa2\", \"lastname\": \"Albana2\", \"email\": \"mostafa.albana.2@gmail.com\"}"  
+  ```
+
+2- Login (Get the OAuth token from Keycloak)
+```shell
    curl --insecure -X POST http://localhost:8080/realms/social/protocol/openid-connect/token \
-    --user backend-service:drMIoXAkomvdWhS4lZCM6IkmZ6TRJQ0h \
+    --user backend-service:Wbw4dVq74XTlzjfXTIKizFEVodPOPmY4 \
     -H 'content-type: application/x-www-form-urlencoded' \
     -d 'username=mostafa&password=123&grant_type=password'
 ```
+
+3- Send friend request
+
+```shell
+curl -X POST --location "http://localhost:8010/friend/send/{to}" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer ${token}" 
+```
+Then login with the other user 
+```shell
+   curl --insecure -X POST http://localhost:8080/realms/social/protocol/openid-connect/token \
+    --user backend-service:Wbw4dVq74XTlzjfXTIKizFEVodPOPmY4 \
+    -H 'content-type: application/x-www-form-urlencoded' \
+    -d 'username=mostafa2&password=123&grant_type=password'
+```
+
+

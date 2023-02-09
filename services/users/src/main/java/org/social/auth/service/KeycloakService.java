@@ -3,6 +3,7 @@ package org.social.auth.service;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.social.constants.SecurityConstants;
 import org.social.form.UserForm;
@@ -27,15 +28,18 @@ public class KeycloakService {
         UserRepresentation userRep = new UserRepresentation();
         fillUserRepresentation(userRep, form);
 
-        // client credential
+        // user credential
         CredentialRepresentation credential = new CredentialRepresentation();
         credential.setType(CredentialRepresentation.PASSWORD);
         credential.setValue(form.getPassword());
         credential.setTemporary(false);
-
         userRep.setCredentials(Collections.singletonList(credential));
-        userRep.setRealmRoles(Collections.singletonList(SecurityConstants.ROLE_USER));
-        userRep.setClientRoles(Collections.singletonMap(SecurityConstants.ROLE_USER, new ArrayList<>()));
+
+        // Next code is commented because it's not working due to a bug in Keycloak Api's
+//        List<String> realmRoles = new ArrayList<>();
+//        realmRoles.add(SecurityConstants.ROLE_USER);
+//        userRep.setRealmRoles(realmRoles);
+
         userRep.setEnabled(true);
         userRep.setEmailVerified(true); // for now
 
@@ -51,6 +55,14 @@ public class KeycloakService {
             return users.get(0);
         }
         return null;
+    }
+
+
+    public void updateRealmRole(String keycloakUserId) {
+        UserResource userResource = keycloak.realm(SecurityConstants.REALM).users().get(keycloakUserId);
+        List<RoleRepresentation> rolesToAdd =
+                Arrays.asList(keycloak.realm(SecurityConstants.REALM).roles().get(SecurityConstants.ROLE_USER).toRepresentation());
+        userResource.roles().realmLevel().add(rolesToAdd);
     }
 
     public void update(String keycloakUserId, UserForm userForm) {

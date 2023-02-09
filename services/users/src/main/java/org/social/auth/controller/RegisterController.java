@@ -2,6 +2,8 @@ package org.social.auth.controller;
 
 import org.social.auth.service.UserManagerService;
 import org.social.form.UserForm;
+import org.social.model.User;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -24,8 +26,8 @@ public class RegisterController {
 
     @POST
     public Response register(UserForm userForm) throws Exception{
-       userManagerService.addNewUser(userForm);
-       return Response.ok().build();
+       User user = userManagerService.addNewUser(userForm);
+       return Response.ok(user.getId()).build();
     }
 
 //    @GET

@@ -9,6 +9,7 @@ import org.social.caching.PostCacheManager;
 import org.social.form.PostFeedCache;
 import org.social.form.PostForm;
 import org.social.form.UserForm;
+import org.social.form.ZeroPriorityPost;
 import org.social.model.Post;
 import org.social.model.User;
 import org.social.post.mapper.PostMapper;
@@ -54,7 +55,7 @@ public class FeedService {
 
     @Inject
     @Channel("zero-priority-out")
-    Emitter<PostForm> zeroPriorityPostsEmitter;
+    Emitter<ZeroPriorityPost> zeroPriorityPostsEmitter;
 
     PostMapper postMapper = PostMapper.mapper;
 
@@ -91,7 +92,7 @@ public class FeedService {
                 post = postService.getPostForm(pfc.getPostId(), DEFAULT_POST_COMMENTS_CACHE);
             }
             posts.add(post);
-            zeroPriorityPostsEmitter.send(post);
+            zeroPriorityPostsEmitter.send(new ZeroPriorityPost(userId, pfc));
         }
         return posts;
     }

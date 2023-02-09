@@ -1,9 +1,13 @@
 package org.social.services;
 
+import io.quarkus.oidc.runtime.OidcJwtCallerPrincipal;
+import io.quarkus.security.identity.SecurityIdentity;
+import org.social.constants.SecurityConstants;
 import org.social.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.json.JsonNumber;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -20,6 +24,15 @@ public class UserService {
 
     @Inject
     EntityManager em;
+
+    @Inject
+    SecurityIdentity identity;
+
+    public Long currentLoginUserId() {
+        OidcJwtCallerPrincipal principal = (OidcJwtCallerPrincipal) identity.getPrincipal();
+        JsonNumber id = principal.getClaim(SecurityConstants.USER_ID_ATTRIBUTE);
+        return id.longValue();
+    }
 
     public User getUser(Long id) {
         return em.find(User.class, id);

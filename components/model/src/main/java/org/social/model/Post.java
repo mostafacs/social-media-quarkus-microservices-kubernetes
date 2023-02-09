@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -25,7 +26,7 @@ import java.util.Objects;
  * @Author Mostafa
  * On 12/4/22
  */
-@Table(name = "post")
+@Table(name = "post", indexes = {@Index(columnList = "created_on"), @Index(columnList = "updated_on")})
 @Entity
 @Getter @Setter
 public class Post {

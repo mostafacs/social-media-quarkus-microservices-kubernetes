@@ -2,6 +2,7 @@ package org.social.post.controller;
 
 import org.social.form.PostForm;
 import org.social.post.service.FeedService;
+import org.social.services.UserService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -19,13 +20,12 @@ public class FeedController {
     @Inject
     FeedService feedService;
 
-//    @Inject
-//    SecurityIdentityAssociation identity;
+    @Inject
+    UserService userService;
 
     @GET
     public Response getFeed() throws Exception {
-        Long currentLoginUser = 1l; // FIXME
-        List<PostForm> feedPosts = feedService.getFeed(currentLoginUser);
+        List<PostForm> feedPosts = feedService.getFeed(userService.currentLoginUserId());
         return Response.ok(feedPosts).build();
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * @Author Mostafa
+ * This abstraction is good to add a new caching vendor like Redis
  * On 12/18/22
  */
 public interface FeedCacheManager {
