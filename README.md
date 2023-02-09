@@ -12,7 +12,7 @@ I tried to write code in best practice software development and implement the ar
 * Keycloak project security (Authentication and Authorization)
 * Java (Quarkus, JPA, ...)
 ## Project Architecture
-Goal: Load user feedand add new feed too fast
+Goal: Load user feed and add new feed too fast
 ### Add Post
 ![Add post architecture](docs/add.post.png)
 
