@@ -5,11 +5,12 @@ Implementation for social media network system using Java, Quarkus, Kafka and Ha
 I tried to write code in best practice software development and implement the architecture to achieve project security and resilience.
 
 ## Technology Stack
-1- Mysql (DB)
-2- Kafka (help in processing users feed in the background)
-3- Hazelcast for cache user feeds and Post caching too.
-4- Keycloak project security (Authentication and Authorization)
-5- Java (Quarkus, JPA, ...)
+
+* Mysql (DB)
+* Kafka (help in processing users feed in the background)
+* Hazelcast for cache user feeds and Post caching too(I will add Redis and you can switching between them from the config).
+* Keycloak project security (Authentication and Authorization)
+* Java (Quarkus, JPA, ...)
 ## Project Architecture
 Goal: Load user feedand add new feed too fast
 ### Add Post
@@ -122,7 +123,7 @@ curl -X POST --location "http://localhost:8010/friend/send/{to}" \
 -H "Authorization: Bearer ${token1}" 
 ```
 
-4-Then login with the other user (Token2)
+4- Then login with the other user (Token2)
 ```shell
    curl --insecure -X POST http://localhost:8080/realms/social/protocol/openid-connect/token \
     --user backend-service:Wbw4dVq74XTlzjfXTIKizFEVodPOPmY4 \
@@ -130,14 +131,14 @@ curl -X POST --location "http://localhost:8010/friend/send/{to}" \
     -d 'username=mostafa2&password=123&grant_type=password'
 ```
 
-5-Confirm friend request
+5- Confirm friend request
 ```shell
 curl -X PUT --location "http://localhost:8010/friend/confirm/{friend-request-id}" \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer ${token2}"
  ```
 
-6-Add New Post for user1 (mostafa)
+6- Add New Post for user1 (mostafa)
 ```shell
 curl -X POST --location "http://localhost:8020/post" \
 -H "Content-Type: application/json" \
@@ -145,7 +146,7 @@ curl -X POST --location "http://localhost:8020/post" \
 -d "{\"postBody\": \"My first post\"}"
 ```
 
-7-Get the feed of user2 (mostafa2)
+7- Get the feed of user2 (mostafa2)
 ```shell
 curl -X GET --location "http://localhost:8020/get" \
 -H "Content-Type: application/json" \
