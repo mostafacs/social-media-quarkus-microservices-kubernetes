@@ -23,7 +23,7 @@ Goal: Load user feed and add new feed too fast
 
 ## Run App Locally on k8s
 
-You need to have MYSQL database installed on your machine and add two schemas (social_media, keycloak), docker desktop, docker compose and minikube
+You need to have MYSQL database installed on your machine and add two empty schemas (social_media, keycloak), docker desktop, docker compose and minikube
 
 ** Be sure you have Docker Desktop started:
 
